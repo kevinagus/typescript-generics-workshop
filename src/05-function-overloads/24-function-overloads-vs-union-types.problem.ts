@@ -1,12 +1,25 @@
 import { expect, it } from "vitest";
 import { Equal, Expect } from "../helpers/type-utils";
 
-function runGenerator(generator: unknown) {
+//Solution 2
+function runGenerator(generator: { run: () => string }): string;
+function runGenerator(generator: () => string): string;
+function runGenerator(
+  generator: { run: () => string } | (() => string)
+): string {
   if (typeof generator === "function") {
     return generator();
   }
   return generator.run();
 }
+
+//Solution 1
+// function runGenerator(generator: { run: () => string } | (() => string)): string {
+//   if (typeof generator === "function") {
+//     return generator();
+//   }
+//   return generator.run();
+// }
 
 it("Should accept an object where the generator is a function", () => {
   const result = runGenerator({
